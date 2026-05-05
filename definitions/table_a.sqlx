@@ -1,0 +1,6 @@
+config {
+  type: "declaration", 
+  schema:"Demo", 
+  name: "table_A_*", 
+  tags : ["upstream"]
+}

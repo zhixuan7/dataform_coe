@@ -1,0 +1,7 @@
+config {
+    type: "incremental", 
+    schema: "Demo", 
+    tags: ["upstream"]
+}
+
+select * from ${ref("table_A_*")}

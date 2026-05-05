@@ -1,0 +1,14 @@
+config {
+    type: "operations", 
+    schema: "Demo", 
+    tags: ["daily_order"]
+}
+
+EXPORT DATA OPTIONS (
+  uri       = CONCAT('gs://zx-test-mycoe/sample_data_', FORMAT_DATE('%Y%m%d', DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY)), '/part-*.parquet'),
+  format    = 'PARQUET',
+  overwrite = true
+)
+AS
+SELECT *
+FROM ${ref("vw_complete_order")}

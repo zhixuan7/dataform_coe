@@ -1,0 +1,11 @@
+config {
+    type: "view", 
+    schema: "Demo", 
+    tags: ["daily_order", "view"]
+}
+
+select 
+* 
+from ${ref("full_order")} 
+where status = 'complete'
+

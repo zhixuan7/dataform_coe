@@ -1,0 +1,13 @@
+config {
+    type: "table", 
+    schema: "Demo", 
+    partitionBy: "date(created_at)",
+    tags: ["daily_order"]
+}
+
+select 
+a.*,
+b.product_name 
+from ${ref({schema:"Demo", name:"daily_orders"})} a 
+left join ${ref({schema:"Demo", name:"product"})} b
+on a.product_id = b.product_id
