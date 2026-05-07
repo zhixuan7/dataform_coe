@@ -1,0 +1,20 @@
+config {
+    type: "operations", 
+    schema: "Demo", 
+    tags: ["test"]
+}
+
+DECLARE run_dt DATE DEFAULT DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY);
+DECLARE run_dt_str STRING DEFAULT FORMAT_DATE('%Y%m%d', run_dt);
+
+IF NOT EXISTS (
+  SELECT 1
+  FROM `my-rd-coe-demo-data.Demo.INFORMATION_SCHEMA.TABLES`
+  WHERE table_name = CONCAT('events_', run_dt_str)
+) THEN
+  RAISE USING MESSAGE = FORMAT(
+    '[PIPELINE ERROR] Source table events_%s not found. GA4 export may be delayed. Aborting pipeline for %t.',
+    run_dt_str,
+    run_dt
+  );
+END IF;

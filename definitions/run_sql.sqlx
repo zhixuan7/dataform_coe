@@ -1,0 +1,8 @@
+config {
+    type: "operations", 
+    schema: "Demo",
+    dependencies: ["check_sql"],  
+    tags: ["test"]
+}
+
+select "run" ; 
