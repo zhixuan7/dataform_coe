@@ -1,0 +1,39 @@
+config {
+    type: "table", 
+    schema: "zx_demo", 
+    tags: ["demo"]
+}
+
+with purchase_header as (
+select *
+from 
+${ref({schema:"CORTEX_SAP_RAW",name:"ekko"})}
+QUALIFY ROW_NUMBER() OVER(PARTITION BY mandt,ebeln ORDER BY recordstamp DESC) = 1
+), purchase_item as (
+select *
+from 
+${ref({schema:"CORTEX_SAP_RAW",name:"ekpo"})}
+QUALIFY ROW_NUMBER() OVER(PARTITION BY mandt,ebeln,ebelp  ORDER BY recordstamp DESC) = 1
+)
+select 
+a.mandt client,
+a.ebeln purchase_doc_number, 
+a.bukrs company_code, 
+a.bstyp purchase_doc_category,
+a.bsart purchase_doc_type,
+a.lifnr vendor_number,
+a.ekorg purchase_org,
+a.ekgrp purchase_group,
+a.bedat purchase_date,
+b.ebelp purchase_item_number,
+b.matnr material_number,
+b.txz01 item_short_text,
+b.werks plant,
+b.lgort storage_location,
+b.menge purchase_order_quantity,
+b.meins order_unit,
+b.netpr net_price,
+b.pstyp item_category
+from purchase_header a 
+inner join purchase_item b
+on a.ebeln = b.ebeln

@@ -1,0 +1,35 @@
+config {
+    type: "table", 
+    schema: "zx_demo", 
+    tags: ["demo"]
+}
+
+with makt as (
+    select *
+    from 
+    ${ref({schema:"CORTEX_SAP_RAW",name:"makt"})}
+QUALIFY ROW_NUMBER() OVER(PARTITION BY mandt,matnr ORDER BY recordstamp DESC) = 1
+), mara as (
+  select *
+  from 
+  ${ref({schema:"CORTEX_SAP_RAW",name:"mara"})}
+  QUALIFY ROW_NUMBER() OVER(PARTITION BY mandt,matnr ORDER BY recordstamp DESC) = 1
+)
+select 
+a.mandt client,
+a.matnr material_number, 
+b.maktx material_description_1, 
+b.maktg material_description_2, 
+a.ersda created_on, 
+a.ernam created_by, 
+a.laeda last_changed, 
+a.aenam changed_by, 
+a.mtart material_type, 
+a.matkl material_group, 
+a.bstme order_unit, 
+a.brgew gross_weight, 
+a.ntgew net_weight
+from mara a 
+inner join makt b 
+on a.matnr = b.matnr
+
