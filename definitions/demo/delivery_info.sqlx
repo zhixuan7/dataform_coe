@@ -44,6 +44,8 @@ from header a
 inner join item b 
 on a.vbeln = b.vbeln
 and a.mandt = b.mandt 
+left join ${ref({schema:"CORTEX_SAP_RAW",name:"t156t"})} c
+on b.bwart = c.bwart
 
 
 

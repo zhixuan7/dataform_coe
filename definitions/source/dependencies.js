@@ -38,4 +38,7 @@ declare({
     schema: "CORTEX_SAP_RAW",
     name: "lips"
 });
-
+declare({
+    schema: "CORTEX_SAP_RAW",
+    name: "t156t"
+});
