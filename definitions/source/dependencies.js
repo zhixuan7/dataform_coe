@@ -30,4 +30,12 @@ declare({
     schema: "CORTEX_SAP_RAW",
     name: "vbap"
 });
+declare({
+    schema: "CORTEX_SAP_RAW",
+    name: "likp"
+});
+declare({
+    schema: "CORTEX_SAP_RAW",
+    name: "lips"
+});
 

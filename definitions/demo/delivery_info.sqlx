@@ -1,0 +1,49 @@
+config {
+    type: "table", 
+    schema: "zx_demo", 
+    tags: ["demo"]
+}
+
+with header as (
+SELECT  
+*
+FROM ${ref({schema:"CORTEX_SAP_RAW",name:"likp"})}
+QUALIFY ROW_NUMBER() OVER(PARTITION BY mandt,vbeln  ORDER BY recordstamp DESC) = 1
+), item as (
+  SELECT  
+ distinct *
+FROM ${ref({schema:"CORTEX_SAP_RAW",name:"lips"})}
+QUALIFY ROW_NUMBER() OVER(PARTITION BY mandt,vbeln,posnr  ORDER BY recordstamp DESC) = 1
+)
+select 
+distinct 
+a.mandt client , 
+a.vbeln delivery_number, 
+a.erdat created_on, 
+a.erzet created_time, 
+a.ernam created_by, 
+a.netwr net_value, 
+a.gewei weight_unit,
+a.vstel shipping_point, 
+a.vkorg sales_org, 
+a.wadat_ist actual_good_movement_date, 
+a.wadat planned_good_movement_date, 
+a.lfdat delivery_date,
+a.kunnr sold_to_party, 
+a.route shipping_route, 
+b.posnr delivery_item, 
+b.matnr material_number, 
+b.arktx short_text_item, 
+b.lfimg actual_delivery_qty, 
+b.vrkme sales_unit, 
+b.netwr item_net_value, 
+b.werks plant, 
+b.lgort storage_location, 
+b.bwart movement_type
+from header a 
+inner join item b 
+on a.vbeln = b.vbeln
+and a.mandt = b.mandt 
+
+
+
