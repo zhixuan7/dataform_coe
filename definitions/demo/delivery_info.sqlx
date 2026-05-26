@@ -39,13 +39,15 @@ b.vrkme sales_unit,
 b.netwr item_net_value, 
 b.werks plant, 
 b.lgort storage_location, 
-b.bwart movement_type
+b.bwart movement_type, 
+c.btext movement_type_description
 from header a 
 inner join item b 
 on a.vbeln = b.vbeln
 and a.mandt = b.mandt 
 left join ${ref({schema:"CORTEX_SAP_RAW",name:"t156t"})} c
 on b.bwart = c.bwart
+
 
 
 
