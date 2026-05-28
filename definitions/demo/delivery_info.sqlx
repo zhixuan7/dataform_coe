@@ -40,6 +40,8 @@ b.netwr item_net_value,
 b.werks plant, 
 b.lgort storage_location, 
 b.bwart movement_type, 
+b.vgbel sales_doc_header_number,
+b.vgpos sales_doc_item,
 c.btext movement_type_description
 from header a 
 inner join item b 

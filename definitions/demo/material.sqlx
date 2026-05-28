@@ -5,7 +5,10 @@ config {
 }
 
 with makt as (
-    select *
+    select * except (maktx) , 
+    case when maktx  = 'Zero Fat Ice cream' then 'Zero Fat Ice Cream' 
+         else trim(maktx) 
+    end maktx 
     from 
     ${ref({schema:"CORTEX_SAP_RAW",name:"makt"})}
 QUALIFY ROW_NUMBER() OVER(PARTITION BY mandt,matnr ORDER BY recordstamp DESC) = 1
@@ -16,10 +19,10 @@ QUALIFY ROW_NUMBER() OVER(PARTITION BY mandt,matnr ORDER BY recordstamp DESC) = 
   QUALIFY ROW_NUMBER() OVER(PARTITION BY mandt,matnr ORDER BY recordstamp DESC) = 1
 )
 select 
+distinct 
 a.mandt client,
 a.matnr material_number, 
-b.maktx material_description_1, 
-b.maktg material_description_2, 
+b.maktx material_description,
 a.ersda created_on, 
 a.ernam created_by, 
 a.laeda last_changed, 
