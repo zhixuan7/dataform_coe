@@ -42,3 +42,8 @@ declare({
     schema: "CORTEX_SAP_RAW",
     name: "t156t"
 });
+declare({
+    schema: "zx_demo",
+    name: "movement_description"
+});
+

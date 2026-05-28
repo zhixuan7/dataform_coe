@@ -45,8 +45,11 @@ from header a
 inner join item b 
 on a.vbeln = b.vbeln
 and a.mandt = b.mandt 
-left join ${ref({schema:"CORTEX_SAP_RAW",name:"t156t"})} c
+left join ${ref("movement_description")} c
 on b.bwart = c.bwart
+and COALESCE(b.kzbew, "0") = c.kzbew
+and COALESCE(b.sobkz, "0") = c.sobkz
+and COALESCE(b.kzvbr, "0") = c.kzvbr
 
 
 
